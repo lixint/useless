@@ -1,0 +1,62 @@
+import webbrowser
+import requests
+import json
+
+
+code_url = "https://api.weibo.com/oauth2/authorize"
+token_url = "https://api.weibo.com/oauth2/access_token"
+
+
+redirect_uri = "https://api.weibo.com/oauth2/default.html"
+appkey = "4006857088"  # 必填
+appsecret = "84196487bc6efc7527d64460cce695d8"  # 必填
+
+code = "cc1bd7c5ced4bacd3086b10d771e7b37"
+
+# 获取code
+def get_code(code_url):
+	weburl = code_url + "?" + "client_id=" + appkey + "&response_type=code&redirect_uri=" + redirect_uri 
+	webbrowser.open_new_tab(weburl)
+
+# 获取access_token
+def get_token(code):
+	
+	params = {"client_id":appkey,"client_secret":appsecret,"grant_type":"authorization_code","redirect_uri":redirect_uri,"code":code}
+	data = requests.post(token_url,params = params)
+	token = json.loads(data.text)
+
+	#print(token["access_token"])
+	try:
+		token = token["access_token"]
+		return token
+	except:
+		return token["error_description"]
+
+#获取短链接
+def get_short_url(token,url_long):
+	url = "https://api.weibo.com/2/short_url/shorten.json"
+	access_token = token
+	url_long = url_long
+	data = requests.get(url,params={"url_long": url_long , "access_token":access_token})
+	url_short = json.loads(data.text)
+	return url_short
+	
+def main(url_long):
+	global code
+	if code:
+		while 
+		token = get_token(code)
+		if "invalid" in token:
+			get_code(code_url)
+			new_code = imput("please input new code:")		
+		else:
+			print(token)
+			short_url = get_short_url(token,url_long)
+			print(short_url["urls"][0]["url_short"])
+	else:
+		get_code(code_url)
+
+if __name__ == '__main__':
+	url_long = "https://www.lixint.me"
+	main(url_long)
+	
