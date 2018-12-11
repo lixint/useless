@@ -1,17 +1,29 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Date    : 2018-12-10 20:18:26
+# @Author  : lixint (lixint8@gmail.com)
+# @Link    : https://github.com/lixint/
+# @Version : $Id$
+import os
 import webbrowser
 import requests
 import json
+from configparser import ConfigParser
 
+conf = ConfigParser()
+if not os.path.exists('SinaConf.ini'):
+	with open("SinaConf.ini") as file:
+		pass
 
 code_url = "https://api.weibo.com/oauth2/authorize"
 token_url = "https://api.weibo.com/oauth2/access_token"
 
 
 redirect_uri = "https://api.weibo.com/oauth2/default.html"
-appkey = "4006857088"  # 必填
-appsecret = "84196487bc6efc7527d64460cce695d8"  # 必填
+appkey = "40067088"  # 必填
+appsecret = "84196487bc6efc77d64460cce695d8"  # 必填
 
-code = "cc1bd7c5ced4bacd3086b10d771e7b37"
+code = "cc1bd7c5ced4cd3086b10d771e7b37"
 
 # 获取code
 def get_code(code_url):
@@ -29,8 +41,10 @@ def get_token(code):
 	try:
 		token = token["access_token"]
 		return token
+
 	except:
-		return token["error_description"]
+		token = 0
+		return token
 
 #获取短链接
 def get_short_url(token,url_long):
@@ -44,7 +58,6 @@ def get_short_url(token,url_long):
 def main(url_long):
 	global code
 	if code:
-		while 
 		token = get_token(code)
 		if "invalid" in token:
 			get_code(code_url)
