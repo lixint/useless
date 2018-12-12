@@ -3,7 +3,7 @@
 # @Date    : 2018-12-10 20:18:26
 # @Author  : lixint (lixint8@gmail.com)
 # @Link    : https://github.com/lixint/
-# @Version : $Id$
+# 放弃了，每次都要登录，没啥卵用。
 import os
 import webbrowser
 import requests
@@ -19,9 +19,9 @@ code_url = "https://api.weibo.com/oauth2/authorize"
 token_url = "https://api.weibo.com/oauth2/access_token"
 
 
-redirect_uri = "https://api.weibo.com/oauth2/default.html"
-appkey = "40067088"  # 必填
-appsecret = "84196487bc6efc77d64460cce695d8"  # 必填
+redirect_uri = ""
+appkey = ""  # 必填
+appsecret = ""  # 必填
 
 code = "cc1bd7c5ced4cd3086b10d771e7b37"
 
