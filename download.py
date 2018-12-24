@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 import re
 import time
 from urllib.parse import urljoin
+import logging
 
 
 header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -19,7 +20,7 @@ header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image
 'Cache-Control': 'max-age=0',
 'Connection': 'keep-alive',
 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
-
+logging.basicConfig(level=logging.INFO,filename="log.txt")
 base = "http://www.ieslpod.com"
 '''
 res = requests.get("http://www.ieslpod.com/Cultural_English/1_60/",headers = header)
@@ -76,15 +77,17 @@ def getpage(page_url,name):
 	res.encoding = "utf-8"
 	with open ("{}.html".format(name),"w",encoding="utf-8") as html:
 		html.write(res.text)
+	logging.info("{}.html is done".format(name))
 
 
 def getcontent(name):
 	soup = BeautifulSoup(open("{}.html".format(name),encoding = "utf-8"),"lxml")
 	div = soup.select(".neirong")
-	print(type(div[0]))
+	#print(type(div[0]))
 	a = str(div[0])
 	with open("{}_con.html".format(name),"w",encoding="utf-8") as html:
 		html.write(a)
+	logging.info("{}_con.html is done".format(name))
 
 def getvideo(name):
 	soup = BeautifulSoup(open("{}.html".format(name),encoding = "utf-8"),"lxml")
@@ -92,21 +95,34 @@ def getvideo(name):
 	mpurl = re.findall(r'mp3:"(.*?)"', content)
 	url = urljoin(base, mpurl[0])
 	#print(url)
-	mpp = requests.get(url,stream=True)
+	res = requests.get(url,stream=True,headers=header)
+	length = float(res.headers['content-length'])
+	count = 0
+	count_tmp = 0
+	time1 = time.time()
 	with open('{}.mp3'.format(name),'wb') as mus:
-		for chunk in mpp.iter_content(chunk_size=1024):
+		for chunk in res.iter_content(chunk_size=1024):
 			if chunk:
 				mus.write(chunk)
-
+				count += len(chunk)
+				if time.time() - time1 >10:  #提示频率s
+					p = count / length * 100
+					speed = (count - count_tmp) / 1024 / 1024 /2
+					count_tmp = count
+					print('{}.mp3: {:.2f}%, speed:{:.2f}M/s'.format(name,p,speed))
+					logging.info('{}.mp3: {:.2f}%, speed:{:.2f}M/s'.format(name,p,speed))
+					time1 = time.time()
+	logging.info("{}.mp3 is done".format(name))
 
 def main():
 	part_urls = getroot()
 	#print(part_urls)
-	for part_url in [part_urls[0]]:   #[0]为测试用
+	for part_url in part_urls:   #[0]为测试用
 		#print(part_url)
 		href_list = getindex(part_url)
-		for i in range(3):
-			print("start")
+		for i in range(len(href_list)):
+			#print("start")
+			logging.info("start")
 			getpage(href_list[i], i+1)
 			getcontent(i+1)
 			getvideo(i+1)
