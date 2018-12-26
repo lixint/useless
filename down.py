@@ -26,7 +26,7 @@ def download(url):
 
 def check(url):
 	try:
-		filedata = urllib.parse.urlsplit(url)
+		filedata = urllib.parse.urlsplit(url[:-1])
 		filename = filedata.path[7:]
 		res = requests.get(url,stream=True)
 		websize = res.headers["content-length"]
