@@ -18,7 +18,10 @@ print(urls[0])'''
 #wget.download(urls[0][:-1])
 def download(url):
 	try:
-		wget.download(url[:-1])
+		if "\n" in url:
+			wget.download(url[:-1])
+		else:
+			wget.download(url)
 		logging.info("{} download one file".format(time.strftime("%H:%M:%M")))
 	except BaseException as err:
 		logging.info("{},Error in download!==>{}".format(time.strftime("%H:%M:%M"),err))
@@ -28,11 +31,17 @@ def check(url):
 	try:
 		filedata = urllib.parse.urlsplit(url[:-1])
 		filename = filedata.path[7:]
-		res = requests.get(url,stream=True)
-		websize = res.headers["content-length"]
-		#print(type(websize))
+		if "\n" in url:
+			with requests.get(url[:-1],stream=True) as res:
+				websize = res.headers["content-length"]
+		else:
+			with requests.get(url,stream=True) as res:
+				websize = res.headers["content-length"]
+		#print(res)
+		#print(url[:-1])
+		#print(websize)
 		realsize = os.path.getsize(filename)
-		#print(type(realsize))
+		#print(realsize)
 		if int(websize) != int(realsize):
 			#print("wrong")
 			logging.info("{},{} is redownloading..".format(time.strftime("%H:%M:%M"),filename))
