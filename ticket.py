@@ -37,6 +37,7 @@ def get_num(data,from_s,to_s):
 
 	with requests.Session() as s:
 		res = s.get(url,params=param,headers = head)
+	res.encoding = "utf-8"
 	#res = requests.get(url,params=param,headers = head)
 	jsons = json.loads(res.text)
 	#print(json.dumps(jsons["data"]["result"][2],indent=4,ensure_ascii = False))

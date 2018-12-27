@@ -5,7 +5,7 @@ import requests
 import time
 import logging
 #url = "http://www.ieslpod.com/mp223/52.m4a"
-file = "1.txt"
+file = "remain.txt"
 logging.basicConfig(level=logging.INFO,filename="log.txt")
 #print(a.path[7:])
 '''b = os.path.splitext(a.path)

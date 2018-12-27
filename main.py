@@ -5,14 +5,26 @@
 # @Link    : https://github.com/lixint/
 # @Version : $Id$
 
-import schedule
+
 import time
-import email2
-import xunhuan
+import schedule
 
 
-schedule.every().day.at("06:10").do(xunhuan.sch())
+def job():
+	print("working===>{}".format(time.strftime('%H:%M:%S')))
+
+
+schedule.every(1).seconds.do(job)
 
 while 1:
-	schedule.run_pending()
+	if int(time.strftime('%H%M')) <= 950 and int(time.strftime('%H%M')) >= 947:
+		run = True
+	elif int(time.strftime('%H%M')) <= 955 and int(time.strftime('%H%M')) >= 953:
+		run = True
+	else:
+		run = False
+	print("waiting..{}".format(time.strftime('%H:%M:%S')))
+	while run:#int(time.strftime('%H%M')) < 938 and int(time.strftime('%H%M')) >= 936:
+		schedule.run_pending()
+		time.sleep(1)
 	time.sleep(1)
