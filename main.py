@@ -39,10 +39,12 @@ def a():
 	head = {'Connection': 'keep-alive',
 		'Cache-Control': 'no-cache',
 		'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+		#'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
 		'Accept':'*/*',
 		'X-Requested-With': 'XMLHttpRequest',
 		'Accept-Encoding': 'gzip, deflate, br',
-		'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8'
+		'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+		'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
 		}
 	with requests.Session() as s:
 		res = s.get(url,headers = head)

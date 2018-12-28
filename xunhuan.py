@@ -17,8 +17,8 @@ def job():
 		logging.basicConfig(level=logging.INFO,filename="{}log.txt".format(time.strftime("%m-%d")))
 		for date in datesum:
 			checi,yw,yz = ticket.get_num(date, "QTP","WFK")
-			with open("{}.txt".format(time.strftime("%m-%d")),"a",encoding="utf-8") as log:
-				log.write("{}-{}-{}-{}-{}\n".format(date,time.strftime("%H:%M"),checi,yw,yz))
+			with open("{}.txt".format(time.strftime("%m-%d")),"a",encoding="utf-8") as tklog:
+				tklog.write("{}-{}-{}-{}-{} \n".format(date,time.strftime("%H:%M"),checi,yw,yz))
 			logging.info("{}-{}-{}-{}-{}".format(date,time.strftime("%H:%M"),checi,yw,yz))
 			time.sleep(5)
 	except BaseException as err:
