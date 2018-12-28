@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import requests
 import json
 #import email2
@@ -8,25 +10,13 @@ from_station='BXP' 	#出站
 to_station='IOQ'   #到站'''
    #票型
 
+def get_num(date,from_s,to_s):
 
-
-
-
-def get_num(data,from_s,to_s):
-
-
-	ltrain_date=data  #日期
-	from_station=from_s 	#出站
-	to_station=to_s
-	purpose_codes='ADULT'
-	url = "https://kyfw.12306.cn/otn/leftTicket/queryA"
-
-	param = {
-	"leftTicketDTO.train_date":ltrain_date,
-	"leftTicketDTO.from_station":from_station,
-	"leftTicketDTO.to_station":to_station,
-	"purpose_codes":purpose_codes
-	}
+	url=('https://kyfw.12306.cn/otn/leftTicket/queryA?'
+         'leftTicketDTO.train_date={}&'
+         'leftTicketDTO.from_station={}&'
+         'leftTicketDTO.to_station={}&'
+         'purpose_codes=ADULT').format(date,from_s,to_s)
 
 	head = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 	'Accept-Encoding': 'gzip, deflate',
@@ -38,11 +28,11 @@ def get_num(data,from_s,to_s):
 	}
 
 	with requests.Session() as s:
-		res = s.get(url,params=param,headers = head)
+		res = s.get(url,headers = head)  #verify=False
 		res.encoding = "utf-8"
 	#res = requests.get(url,params=param,headers = head)
 	#r = res.text.encode('utf-8')
-	print(res.text)
+	#print(res.text)
 
 	#print(type(r))
 	jsons = json.loads(res.text)
@@ -56,8 +46,8 @@ def get_num(data,from_s,to_s):
 					print("{}==>{}".format(i,data[i]))
 			'''
 	print("{},{},{}".format(data[3],data[28],data[29]))
-	#return data[3],data[28],data[29]
-	return res
+	return data[3],data[28],data[29]
+	#return res
 
 	# 3车次，26无座，28硬卧，29硬座
 if __name__ == '__main__':

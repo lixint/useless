@@ -47,8 +47,9 @@ def a():
 		'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
 		}
 	with requests.Session() as s:
-		res = s.get(url,headers = head)
-	res.encoding = 'utf-8'
+		#res = s.get(url,headers = head)
+		res= s.get(url)
+	#res.encoding = 'utf-8'
 	print(res.text)
 	return res
 a = a()
