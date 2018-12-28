@@ -5,26 +5,35 @@
 # @Link    : https://github.com/lixint/
 # @Version : $Id$
 
+import requests
+import json
 
-import time
-import schedule
+def a():
+	ltrain_date='2019-01-03'  #日期
+	from_station='QTP' 	#出站
+	to_station='WFK'   #到站
 
+	#ltrain_date=data  #日期
+	#from_station=from_s 	#出站
+	#to_station=to_s
+	purpose_codes='ADULT'
+	url = "https://kyfw.12306.cn/otn/leftTicket/queryA"
+	param = {
+	"leftTicketDTO.train_date":ltrain_date,
+	"leftTicketDTO.from_station":from_station,
+	"leftTicketDTO.to_station":to_station,
+	"purpose_codes":purpose_codes
+	}
 
-def job():
-	print("working===>{}".format(time.strftime('%H:%M:%S')))
-
-
-schedule.every(1).seconds.do(job)
-
-while 1:
-	if int(time.strftime('%H%M')) <= 950 and int(time.strftime('%H%M')) >= 947:
-		run = True
-	elif int(time.strftime('%H%M')) <= 955 and int(time.strftime('%H%M')) >= 953:
-		run = True
-	else:
-		run = False
-	print("waiting..{}".format(time.strftime('%H:%M:%S')))
-	while run:#int(time.strftime('%H%M')) < 938 and int(time.strftime('%H%M')) >= 936:
-		schedule.run_pending()
-		time.sleep(1)
-	time.sleep(1)
+	head = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+	'Accept-Encoding': 'gzip, deflate',
+	'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+	'Cache-Control': 'max-age=0',
+	'Connection': 'keep-alive',
+	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
+	with requests.Session() as s:
+		res = s.get(url,params=param,headers = head)
+	res.encoding = 'utf-8'
+	print(res.text)
+	return res
+#a = a()
