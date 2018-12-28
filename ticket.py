@@ -33,11 +33,13 @@ def get_num(data,from_s,to_s):
 	'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
 	'Cache-Control': 'max-age=0',
 	'Connection': 'keep-alive',
-	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
+	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+	'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
+	}
 
 	with requests.Session() as s:
 		res = s.get(url,params=param,headers = head)
-		#res.encoding = "utf-8-sig"
+		res.encoding = "utf-8"
 	#res = requests.get(url,params=param,headers = head)
 	#r = res.text.encode('utf-8')
 	print(res.text)
