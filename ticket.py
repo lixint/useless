@@ -3,6 +3,7 @@
 import requests
 import json
 #import email2
+from fake_useragent import UserAgent
 
 
 '''ltrain_date='2018-12-28'  #日期
@@ -12,7 +13,7 @@ to_station='IOQ'   #到站'''
 
 def get_num(date,from_s,to_s):
 
-	url=('https://kyfw.12306.cn/otn/leftTicket/queryA?'
+	url=('https://kyfw.12306.cn/otn/leftTicket/queryZ?'
          'leftTicketDTO.train_date={}&'
          'leftTicketDTO.from_station={}&'
          'leftTicketDTO.to_station={}&'
@@ -23,7 +24,7 @@ def get_num(date,from_s,to_s):
 	'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
 	'Cache-Control': 'max-age=0',
 	'Connection': 'keep-alive',
-	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+	'User-Agent': UserAgent().random,
 	'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
 	}
 
@@ -32,19 +33,15 @@ def get_num(date,from_s,to_s):
 		res.encoding = "utf-8"
 	#res = requests.get(url,params=param,headers = head)
 	#r = res.text.encode('utf-8')
-	#print(res.text)
+	print(res.text)
 
 	#print(type(r))
 	jsons = json.loads(res.text)
-	#jsons = res.json()
-	#print(json.dumps(jsons["data"]["result"][2],indent=4,ensure_ascii = False))
+
+
 	data1 = jsons["data"]["result"][2]
 	data = data1.split("|")
-	
-	#print("{},{}".format(data[3],data[28]))
-	'''for i in range(len(data)):
-					print("{}==>{}".format(i,data[i]))
-			'''
+
 	print("{},{},{}".format(data[3],data[28],data[29]))
 	return data[3],data[28],data[29]
 	#return res
