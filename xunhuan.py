@@ -5,11 +5,50 @@
 # @Link    : https://github.com/lixint/
 # @Version : $Id$
 
-import ticket
+
 import email2
 import schedule
 import time
 import logging
+from fake_useragent import UserAgent
+import requests
+import json
+
+def get_num(date,from_s,to_s):
+	fake_ua_path = "useragent.json"
+	ua = UserAgent(path = fake_ua_path)
+	url=('http://kyfw.12306.cn/otn/leftTicket/queryZ?'
+         'leftTicketDTO.train_date={}&'
+         'leftTicketDTO.from_station={}&'
+         'leftTicketDTO.to_station={}&'
+         'purpose_codes=ADULT').format(date,from_s,to_s)
+
+	head = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+	'Accept-Encoding': 'gzip, deflate',
+	'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+	'Cache-Control': 'max-age=0',
+	'Connection': 'keep-alive',
+	'User-Agent': ua.random,
+	'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
+	}
+
+	with requests.Session() as s:
+		res = s.get(url,headers = head)  #verify=False
+		res.encoding = "utf-8"
+	#res = requests.get(url,params=param,headers = head)
+	#r = res.text.encode('utf-8')
+	print(res.text[:50])
+
+	#print(type(r))
+	jsons = json.loads(res.text)
+
+
+	data1 = jsons["data"]["result"][2]
+	data = data1.split("|")
+
+	print("{},{},{}".format(data[3],data[28],data[29]))
+	return data[3],data[28],data[29]
+	#return res
 
 def job():
 	try:
@@ -17,7 +56,7 @@ def job():
 		datesum = ["2019-01-05","2019-01-06","2019-01-07","2019-01-08","2019-01-09","2019-01-10","2019-01-11","2019-01-12"]
 		logging.basicConfig(level=logging.INFO)#,filename="{}log.txt".format(time.strftime("%m-%d")))
 		for date in datesum:
-			checi,yw,yz = ticket.get_num(date, "QTP","WFK")
+			checi,yw,yz = get_num(date, "QTP","WFK")
 			with open("{}.txt".format(time.strftime("%m-%d")),"a",encoding="utf-8") as tklog:
 				tklog.write("{}-{}-{}-{}-{} \n".format(date,time.strftime("%H:%M"),checi,yw,yz))
 			logging.info("{}-{}-{}-{}-{}".format(date,time.strftime("%H:%M"),checi,yw,yz))
