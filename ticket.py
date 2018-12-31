@@ -34,7 +34,7 @@ def get_num(date,from_s,to_s):
 		res.encoding = "utf-8"
 	#res = requests.get(url,params=param,headers = head)
 	#r = res.text.encode('utf-8')
-	print(res.text)
+	print(res.text[:50])
 
 	#print(type(r))
 	jsons = json.loads(res.text)
