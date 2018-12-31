@@ -12,8 +12,9 @@ to_station='IOQ'   #到站'''
    #票型
 
 def get_num(date,from_s,to_s):
-
-	url=('https://kyfw.12306.cn/otn/leftTicket/queryZ?'
+	fake_ua_path = "useragent.json"
+	ua = UserAgent(path = fake_ua_path)
+	url=('http://kyfw.12306.cn/otn/leftTicket/queryZ?'
          'leftTicketDTO.train_date={}&'
          'leftTicketDTO.from_station={}&'
          'leftTicketDTO.to_station={}&'
@@ -24,7 +25,7 @@ def get_num(date,from_s,to_s):
 	'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
 	'Cache-Control': 'max-age=0',
 	'Connection': 'keep-alive',
-	'User-Agent': UserAgent().random,
+	'User-Agent': ua.random,
 	'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
 	}
 
