@@ -14,9 +14,14 @@ from fake_useragent import UserAgent
 import requests
 import json
 
+
+fake_ua_path = "useragent.json"
+ua = UserAgent(path = fake_ua_path)
+
 def get_num(date,from_s,to_s):
-	fake_ua_path = "useragent.json"
-	ua = UserAgent(path = fake_ua_path)
+
+	agt = ua.random
+	
 	url=('http://kyfw.12306.cn/otn/leftTicket/queryZ?'
          'leftTicketDTO.train_date={}&'
          'leftTicketDTO.from_station={}&'
@@ -28,7 +33,7 @@ def get_num(date,from_s,to_s):
 	'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
 	'Cache-Control': 'max-age=0',
 	'Connection': 'keep-alive',
-	'User-Agent': ua.random,
+	'User-Agent': agt,
 	'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
 	}
 
@@ -37,7 +42,7 @@ def get_num(date,from_s,to_s):
 		res.encoding = "utf-8"
 	#res = requests.get(url,params=param,headers = head)
 	#r = res.text.encode('utf-8')
-	print(res.text[:50])
+	print("{}===>{}".format(res.text[:20],agt))
 
 	#print(type(r))
 	jsons = json.loads(res.text)
