@@ -19,9 +19,7 @@ fake_ua_path = "useragent.json"
 ua = UserAgent(path = fake_ua_path)
 
 def get_num(date,from_s,to_s):
-
 	agt = ua.random
-	
 	url=('http://kyfw.12306.cn/otn/leftTicket/queryZ?'
          'leftTicketDTO.train_date={}&'
          'leftTicketDTO.from_station={}&'
@@ -38,8 +36,10 @@ def get_num(date,from_s,to_s):
 	}
 
 	with requests.Session() as s:
-		res = s.get(url,headers = head)  #verify=False
+		res = s.get(url,headers = head,verify=False)
 		res.encoding = "utf-8"
+
+
 	#res = requests.get(url,params=param,headers = head)
 	#r = res.text.encode('utf-8')
 	print("{}===>{}".format(res.text[:20],agt))
@@ -72,8 +72,10 @@ def job():
 def sd_mail():
 	email2.sendmail(content="{}".format(time.strftime('%y-%m-%d')),file ="{}.txt".format(time.strftime("%m-%d")))
 
+
+
 schedule.every().day.at("22:55").do(sd_mail)
-schedule.every(5).minutes.do(job)
+schedule.every(1).minutes.do(job)
 
 while 1:
 	print("waiting..{}".format(time.strftime('%H:%M:%S')))

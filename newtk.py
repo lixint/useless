@@ -22,13 +22,15 @@ ua = UserAgent(path = fake_ua_path)
 def get_num(date,from_s,to_s):
 	dic = {}
 	agt = ua.random
+	cookies = "JSESSIONID=A55AF1A9B180B07AB6135D3F4C948BD1; _jc_save_wfdc_flag=dc; _jc_save_fromStation=%u79E6%u7687%u5C9B%2CQTP; _jc_save_toStation=%u6F4D%u574A%2CWFK; RAIL_EXPIRATION=1546541865708; RAIL_DEVICEID=Vcqkb2Gdw-FFp42SBgb4dmhCCh-2T7sfz7GZlX0XytIqDQTdzMa8HmGMBsIfwmt1hggPMrouF2nH9zWsPLQaaV3vrFfPUzWkjCv2zc5hdsF7CNmRFJ6WTa6IHQTucxU6wFUpuHJWI1pMY8UI8ued3r4xMbbIR2_Z; _jc_save_toDate=2019-01-01; _jc_save_fromDate=2019-01-10; route=c5c62a339e7744272a54643b3be5bf64; BIGipServerotn=49283594.64545.0000"
 	head = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 	'Accept-Encoding': 'gzip, deflate',
 	'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
 	'Cache-Control': 'max-age=0',
 	'Connection': 'keep-alive',
 	'User-Agent': agt,
-	'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init'
+	'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init',
+	"Cookie":cookies
 	}
 
 	with requests.Session() as s:
@@ -38,7 +40,7 @@ def get_num(date,from_s,to_s):
 		         'leftTicketDTO.from_station={}&'
 		         'leftTicketDTO.to_station={}&'
 		         'purpose_codes=ADULT').format(sgdate,from_s,to_s)
-			res = s.get(url,headers = head)  #verify=False
+			res = s.get(url,headers = head,verify=False)
 			res.encoding = "utf-8"
 			print("{}===>{}".format(res.text[:10],agt[:10]))
 			try:
@@ -98,8 +100,8 @@ if __name__ == '__main__':
 	datesum = ["2019-01-05","2019-01-06","2019-01-07","2019-01-08","2019-01-09","2019-01-10","2019-01-11","2019-01-12"]
 	#dic = get_num(datesum, "QTP","WFK")
 	#print(dic)
-	job()'''
-
+	job()
+'''
 
 
 

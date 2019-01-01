@@ -30,7 +30,7 @@ def get_num(date,from_s,to_s):
 	}
 
 	with requests.Session() as s:
-		res = s.get(url,headers = head)  #verify=False
+		res = s.get(url,headers = head,proxies = {"http":"http://127.0.0.1:8888"})  #verify=False
 		res.encoding = "utf-8"
 	#res = requests.get(url,params=param,headers = head)
 	#r = res.text.encode('utf-8')
